@@ -9,7 +9,6 @@ import dmtools.GUI.LayoutConstants;
 import java.awt.Image;
 import java.awt.Insets;
 import java.net.URL;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
