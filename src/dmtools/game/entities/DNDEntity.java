@@ -13,13 +13,14 @@ import dmtools.game.entities.numericals.enums.Stat;
  *
  * @author A3
  */
-public abstract class DNDEntity implements Comparable<DNDEntity>{
+public abstract class DNDEntity implements Comparable<DNDEntity> {
 
     protected final String name;
     protected final StatBlock statBlock;
     protected int AC;
-    protected final int maxHP;
+    protected int maxHP;
     protected int currentHP;
+    protected String id;
 
     public DNDEntity(String characterName, StatBlock statBlock, int AC,
             int maxHP) {
@@ -28,6 +29,7 @@ public abstract class DNDEntity implements Comparable<DNDEntity>{
         this.AC = AC;
         this.maxHP = maxHP;
         this.currentHP = maxHP;
+        this.id = "";
     }
 
     public String getName() {
@@ -57,7 +59,28 @@ public abstract class DNDEntity implements Comparable<DNDEntity>{
     public void setCurrentHP(int currentHP) {
         this.currentHP = currentHP;
     }
-    
+
+    public String getUniqueName() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(name);
+        if (id.equals("")) {
+            return sb.toString();
+        } else {
+            sb.append(" (");
+            sb.append(id);
+            sb.append(")");
+            return sb.toString();
+        }
+    }
+
+    protected void setID(String id) {
+        this.id = id;
+    }
+
+    protected String getID() {
+        return this.id;
+    }
+
     @Override
     public String toString() {
         return name;
@@ -75,14 +98,14 @@ public abstract class DNDEntity implements Comparable<DNDEntity>{
 
         DNDEntity compared = (DNDEntity) inQuestion;
         //put your equals check here as a return false;
-        return this.name.equalsIgnoreCase(compared.name);
+        return this.getUniqueName().equalsIgnoreCase(compared.getUniqueName());
     }
 
     @Override
     public int compareTo(DNDEntity o) {
-        return this.name.compareToIgnoreCase(o.name);
+        return this.getUniqueName().compareToIgnoreCase(o.getUniqueName());
     }
-    
+
     @Override
     public int hashCode() {
         return this.name.hashCode() * 29;
