@@ -79,10 +79,6 @@ public class Horde extends DNDEntity {
         members.get(monsterNumber).setCurrentHP(currentHP);
     }
     
-    public void setID(String id) {
-        this.id = id;
-    }
-
     @Override
     public int getProficiencyBonus() {
         return 0;

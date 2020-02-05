@@ -60,6 +60,10 @@ public abstract class DNDEntity implements Comparable<DNDEntity> {
         this.currentHP = currentHP;
     }
 
+    public void setID(String id) {
+        this.id = id;
+    }
+
     public String getUniqueName() {
         StringBuilder sb = new StringBuilder();
         sb.append(name);
@@ -71,10 +75,6 @@ public abstract class DNDEntity implements Comparable<DNDEntity> {
             sb.append(")");
             return sb.toString();
         }
-    }
-
-    protected void setID(String id) {
-        this.id = id;
     }
 
     protected String getID() {
