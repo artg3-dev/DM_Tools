@@ -77,8 +77,12 @@ public abstract class DNDEntity implements Comparable<DNDEntity> {
         }
     }
 
-    protected String getID() {
+    public String getID() {
         return this.id;
+    }
+    
+    public boolean hasUniqueID() {
+        return !this.id.equals("");
     }
 
     @Override
