@@ -9,7 +9,7 @@
 7. [Contributing](#contributing)
 8. [License](#license)
 ### System Requirements
-- Java Runtime Environment 1.8.0_241
+- Java Runtime Environment 1.8.0_241 or later
 ### Installation
 #### First Time Install
 1. Download the latest release from [Github](https://github.com/artg3-dev/DM_Tools/releases)
