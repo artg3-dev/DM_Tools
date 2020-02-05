@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dmtools.GUI.entityguicomponents.dialogs;
+package dmtools.GUI.entityguicomponents.pcdialogs;
 
+import dmtools.GUI.entityguicomponents.pcdialogs.panels.CreateACandHP;
+import dmtools.GUI.entityguicomponents.pcdialogs.panels.CreateSelectedSkills;
+import dmtools.GUI.entityguicomponents.pcdialogs.panels.CreateStatBlockPanel;
 import dmtools.GUI.entityguicomponents.comboboxes.EntityComboBox;
-import dmtools.GUI.entityguicomponents.dialogs.panels.DisplayACandHP;
-import dmtools.GUI.entityguicomponents.dialogs.panels.DisplaySelectedSkills;
-import dmtools.GUI.entityguicomponents.dialogs.panels.DisplayStatBlock;
 import dmtools.filehandling.FileHandler;
 import dmtools.game.entities.PC;
 import dmtools.game.entities.characteristics.Alignment;
@@ -35,13 +35,12 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
 /**
  *
  * @author A3
  */
-public class EditPcDialog extends JDialog implements PropertyChangeListener {
+public class CreatePcDialog extends JDialog implements PropertyChangeListener {
 
     private static JLabel cNameLabel;
     private static JLabel pNameLabel;
@@ -57,23 +56,21 @@ public class EditPcDialog extends JDialog implements PropertyChangeListener {
     private static JComboBox alignmentCB;
     private static JComboBox classCB;
     private static EntityComboBox levelBox;
-    private static DisplayStatBlock statBlockPanel;
-    private static DisplaySelectedSkills selectedSkillList;
-    private static DisplayACandHP acAndHP;
+    private static CreateStatBlockPanel statBlockPanel;
+    private static CreateSelectedSkills selectedSkillList;
+    private static CreateACandHP acAndHP;
 
     private JOptionPane optionPane;
 
-    private PC updatedPC;
-    private PC toEditPC;
+    private PC createdPC;
     private boolean shouldSave;
 
-    public EditPcDialog(Frame frame, PC pc) {
+    public CreatePcDialog(Frame frame, boolean shouldSave) {
         super(frame, true);
-        this.toEditPC = pc;
-        this.shouldSave = true;
+        this.shouldSave = shouldSave;
 
-        setTitle(pc.getName());
-        String createButtonTxt = "Save";
+        setTitle("Create a new Player Character");
+        String createButtonTxt = "Create";
         Object[] options = {createButtonTxt};
 
         optionPane = new JOptionPane(getInputFields(),
@@ -110,13 +107,14 @@ public class EditPcDialog extends JDialog implements PropertyChangeListener {
              */
             List<String> errors = checkErrors();
             if (errors == null) {
-                //save the pc here
-                this.updatedPC = getPcWithChanges();
+                //create the pc here
+                this.createdPC = createPC();
                 if (shouldSave) {
                     try {
-                        FileHandler.saveFromInstance(updatedPC, 
+                        FileHandler.saveFromInstance(createdPC, 
                                 FileHandler.PC_FILE);
                     } catch (IOException pcFileHandlerException) {
+                        System.out.println(pcFileHandlerException.getLocalizedMessage());
                     }
                 }
                 dispose();
@@ -130,7 +128,7 @@ public class EditPcDialog extends JDialog implements PropertyChangeListener {
         }
     }
 
-    private PC getPcWithChanges() {
+    private PC createPC() {
         String characterName = cNameTF.getText();
         String playerName = pNameTF.getText();
         Race race = Race.stringValueOf(raceCB.getSelectedItem().toString());
@@ -153,54 +151,45 @@ public class EditPcDialog extends JDialog implements PropertyChangeListener {
 
     }
     
-    public PC getUpdatedPC() {
-        return updatedPC;
+    public PC getCreatedPC() {
+        return createdPC;
     }
 
-    private JComponent[] getInputFields() {
+    private static JComponent[] getInputFields() {
         //Character name
         cNameLabel = new JLabel("Character Name");
-        cNameTF = new JTextField(toEditPC.getName());
-        cNameTF.setEnabled(false);
-        
+        cNameTF = new JTextField();
 
         //Player name
         pNameLabel = new JLabel("Player Name");
-        pNameTF = new JTextField(toEditPC.getPlayerName());
-        pNameTF.setEnabled(false);
+        pNameTF = new JTextField();
 
         //Race
         raceLabel = new JLabel("Race");
         raceCB = new EntityComboBox(EntityComboBox.RACE_BOX);
-        raceCB.setSelectedItem(toEditPC.getRace().toString());
-        raceCB.setEnabled(false);
 
         //Alignment
         alignmentLabel = new JLabel("Alignment");
         alignmentCB = new EntityComboBox(EntityComboBox.ALIGNMENT_BOX);
-        alignmentCB.setSelectedItem(toEditPC.getAlignment().toString());
 
         //Playable Class
         classLabel = new JLabel("Class");
         classCB = new EntityComboBox(EntityComboBox.PLAYABLE_CLASS_BOX);
-        classCB.setSelectedItem(toEditPC.getPlayableClass().toString());
-        classCB.setEnabled(false);
 
         //Character Level
         cLevelLabel = new JLabel("Character Level");
         levelBox = new EntityComboBox(EntityComboBox.CHARACTER_LEVEL_BOX);
-        levelBox.setSelectedIndex(toEditPC.getCharacterLevel() - 1);
 
         //StatBlock
-        statBlockPanel = new DisplayStatBlock(toEditPC);
+        statBlockPanel = new CreateStatBlockPanel();
         statBlockPanel.setFocusable(false);
 
         //Selected Skills
-        selectedSkillList = new DisplaySelectedSkills(toEditPC);
+        selectedSkillList = new CreateSelectedSkills();
         selectedSkillList.setFocusTraversalKeysEnabled(false);
 
         //AC, Max HP, Current HP
-        acAndHP = new DisplayACandHP(toEditPC);
+        acAndHP = new CreateACandHP();
 
         //AC&HP, Statblock and Selected Skills in a panel
         JPanel AcHpStatAndSkillPanel = new JPanel();
@@ -317,20 +306,18 @@ public class EditPcDialog extends JDialog implements PropertyChangeListener {
             errorList.add("-HP cannot be blank");
             acAndHP.highlight(true, "HP");
         }
-        
-        //selected skills disabled
 
-//        //Checks Selected Skills > 0
-//        if (selectedSkillList.getSelectedSkills().size() < 1) {
-//            errorList.add("-At least one skill must be selected");
-//            selectedSkillList.highlight(true);
-//            /*
-//            *THIS IS WHERE YOU WILL PUT THE INFO FOR SKILLS SELECTED != NUMBER
-//            *OF POSSIBLE CLASS SKILLS
-//             */
-//        } else {
-//            selectedSkillList.highlight(false);
-//        }
+        //Checks Selected Skills > 0
+        if (selectedSkillList.getSelectedSkills().size() < 1) {
+            errorList.add("-At least one skill must be selected");
+            selectedSkillList.highlight(true);
+            /*
+            *THIS IS WHERE YOU WILL PUT THE INFO FOR SKILLS SELECTED != NUMBER
+            *OF POSSIBLE CLASS SKILLS
+             */
+        } else {
+            selectedSkillList.highlight(false);
+        }
 
         //Stats
         statBlockPanel.resetHighlight();

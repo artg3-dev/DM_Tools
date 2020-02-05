@@ -5,8 +5,8 @@
  */
 package dmtools.GUI.partymgmt;
 
-import dmtools.GUI.entityguicomponents.dialogs.CreatePcDialog;
-import dmtools.GUI.entityguicomponents.dialogs.EditPcDialog;
+import dmtools.GUI.entityguicomponents.pcdialogs.CreatePcDialog;
+import dmtools.GUI.entityguicomponents.pcdialogs.EditPcDialog;
 import dmtools.GUI.DMToolsGui;
 import dmtools.game.entities.PC;
 import dmtools.playermgmt.PlayerParty;

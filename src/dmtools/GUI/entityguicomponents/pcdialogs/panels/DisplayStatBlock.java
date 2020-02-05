@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dmtools.GUI.entityguicomponents.dialogs.panels;
+package dmtools.GUI.entityguicomponents.pcdialogs.panels;
 
 import dmtools.game.entities.PC;
 import dmtools.game.entities.numericals.StatBlock;

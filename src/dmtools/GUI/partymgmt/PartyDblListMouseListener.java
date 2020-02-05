@@ -5,7 +5,7 @@
  */
 package dmtools.GUI.partymgmt;
 
-import dmtools.GUI.entityguicomponents.dialogs.EditPcDialog;
+import dmtools.GUI.entityguicomponents.pcdialogs.EditPcDialog;
 import dmtools.GUI.DMToolsGui;
 import dmtools.game.entities.PC;
 import java.awt.event.MouseEvent;
