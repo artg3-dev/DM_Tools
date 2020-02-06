@@ -109,7 +109,8 @@ public class EditPcDialog extends JDialog implements PropertyChangeListener {
             * or the pc is created
              */
             List<String> errors = checkErrors();
-            if (errors == null) {
+            System.out.println(selectedSkillList.getSelectedSkills());
+            if (errors.isEmpty()) {
                 //save the pc here
                 this.updatedPC = getPcWithChanges();
                 if (shouldSave) {
@@ -161,19 +162,16 @@ public class EditPcDialog extends JDialog implements PropertyChangeListener {
         //Character name
         cNameLabel = new JLabel("Character Name");
         cNameTF = new JTextField(toEditPC.getName());
-        cNameTF.setEnabled(false);
         
 
         //Player name
         pNameLabel = new JLabel("Player Name");
         pNameTF = new JTextField(toEditPC.getPlayerName());
-        pNameTF.setEnabled(false);
 
         //Race
         raceLabel = new JLabel("Race");
         raceCB = new EntityComboBox(EntityComboBox.RACE_BOX);
         raceCB.setSelectedItem(toEditPC.getRace().toString());
-        raceCB.setEnabled(false);
 
         //Alignment
         alignmentLabel = new JLabel("Alignment");
@@ -184,7 +182,6 @@ public class EditPcDialog extends JDialog implements PropertyChangeListener {
         classLabel = new JLabel("Class");
         classCB = new EntityComboBox(EntityComboBox.PLAYABLE_CLASS_BOX);
         classCB.setSelectedItem(toEditPC.getPlayableClass().toString());
-        classCB.setEnabled(false);
 
         //Character Level
         cLevelLabel = new JLabel("Character Level");
@@ -318,19 +315,17 @@ public class EditPcDialog extends JDialog implements PropertyChangeListener {
             acAndHP.highlight(true, "HP");
         }
         
-        //selected skills disabled
-
-//        //Checks Selected Skills > 0
-//        if (selectedSkillList.getSelectedSkills().size() < 1) {
-//            errorList.add("-At least one skill must be selected");
-//            selectedSkillList.highlight(true);
-//            /*
-//            *THIS IS WHERE YOU WILL PUT THE INFO FOR SKILLS SELECTED != NUMBER
-//            *OF POSSIBLE CLASS SKILLS
-//             */
-//        } else {
-//            selectedSkillList.highlight(false);
-//        }
+        //Checks Selected Skills > 0
+        if (selectedSkillList.getSelectedSkills().size() < 1) {
+            errorList.add("-At least one skill must be selected");
+            selectedSkillList.highlight(true);
+            /*
+            *THIS IS WHERE YOU WILL PUT THE INFO FOR SKILLS SELECTED != NUMBER
+            *OF POSSIBLE CLASS SKILLS
+             */
+        } else {
+            selectedSkillList.highlight(false);
+        }
 
         //Stats
         statBlockPanel.resetHighlight();
@@ -341,10 +336,6 @@ public class EditPcDialog extends JDialog implements PropertyChangeListener {
                 statBlockPanel.highlight(true, i);
             }
         }
-        if (errorList.isEmpty()) {
-            return null;
-        } else {
-            return errorList;
-        }
+        return errorList;
     }
 }
