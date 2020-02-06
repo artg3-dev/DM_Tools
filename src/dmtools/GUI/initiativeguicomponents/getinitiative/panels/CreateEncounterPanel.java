@@ -41,7 +41,7 @@ public class CreateEncounterPanel extends JPanel implements ActionListener {
 
     private final PlayerParty party;
     private final DisplayPanel display;
-    
+
     private JLabel header;
     private PlayerGetInitiativePanel pIniPanel;
     private NonPlayerGetInitiativePanel nIniPanel;
@@ -55,7 +55,7 @@ public class CreateEncounterPanel extends JPanel implements ActionListener {
         this.display = display;
         createComponents();
     }
-    
+
     public void updateParty(PlayerParty party) {
         pIniPanel.updateParty(party);
     }
@@ -203,12 +203,25 @@ public class CreateEncounterPanel extends JPanel implements ActionListener {
         add(filler, c);
 
     }
-    
+
     private Map<DNDEntity, Integer> getInitiatives() {
         Map<DNDEntity, Integer> initiatives = new HashMap();
         initiatives.putAll(pIniPanel.getInitiatives());
         initiatives.putAll(nIniPanel.getInitiatives());
         return initiatives;
+    }
+
+    private void showIdDialog(DNDEntity e) {
+        String s = (String) JOptionPane.showInputDialog(
+                null,
+                "(optional)",
+                "Add Unique ID to " + e.getName(),
+                JOptionPane.QUESTION_MESSAGE);
+
+        //If a string was returned, say so.
+        if ((s != null) && (s.length() > 0)) {
+            e.setID(s);
+        }
     }
 
     @Override
@@ -227,6 +240,7 @@ public class CreateEncounterPanel extends JPanel implements ActionListener {
                     Monster m = (Monster) FileHandler.loadFromName(
                             (String) monBox.getSelectedItem(),
                             FileHandler.MONSTER_FILE);
+                    showIdDialog(m);
                     nIniPanel.addEntity(m);
                 } catch (IOException ex) {
                 }
@@ -261,16 +275,16 @@ public class CreateEncounterPanel extends JPanel implements ActionListener {
         // Begin
         if (e.getSource().equals(beginButton)) {
             if (nIniPanel.hasValidInfo() && pIniPanel.hasValidInfo()) {
-                
+
                 /*
                 * BEGIN ENCOUNTER HERE
-                */
-                InitiativeTracker iniTrack = 
-                        new InitiativeTracker(getInitiatives());
-                RunEncounterPanel runEncounter = 
-                        new RunEncounterPanel(iniTrack, display);
+                 */
+                InitiativeTracker iniTrack
+                        = new InitiativeTracker(getInitiatives());
+                RunEncounterPanel runEncounter
+                        = new RunEncounterPanel(iniTrack, display);
                 display.beginEncounter(runEncounter);
-                
+
             } else {
                 JOptionPane.showMessageDialog(null,
                         "Some initiatives are invalid or incomplete",

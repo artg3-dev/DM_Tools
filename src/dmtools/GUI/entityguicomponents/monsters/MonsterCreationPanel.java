@@ -10,6 +10,8 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
@@ -23,10 +25,10 @@ import javax.swing.border.EtchedBorder;
  *
  * @author A3
  */
-public class MonsterCreationPanel extends JPanel {
+public class MonsterCreationPanel extends JPanel implements FocusListener{
 
-    private JLabel nameLabel, acLabel, hpLabel;
-    private JTextField nameField, acField, hpField;
+    private JLabel nameLabel, acLabel, hpLabel, idLabel;
+    private JTextField nameField, acField, hpField, idField;
     private JComboBox crCombo;
     private ArrayList<String> errors;
 
@@ -65,7 +67,7 @@ public class MonsterCreationPanel extends JPanel {
             errors.add("-HP cannot be blank");
             highlight(hpLabel, true);
         } else {
-        try {
+            try {
                 Integer.parseInt(hpField.getText());
             } catch (NumberFormatException e) {
                 errors.add("-HP must be an Integer");
@@ -91,7 +93,15 @@ public class MonsterCreationPanel extends JPanel {
             int hpValue = Integer.parseInt(hpField.getText());
             int crValue = Integer.parseInt(
                     crCombo.getSelectedItem().toString().split(" ")[1]);
-            return new Monster(name, name, acValue, hpValue, crValue);
+            Monster monster = new Monster(
+                    name, name, acValue, hpValue, crValue);
+            if (idField.getText().equals("") || 
+                    idField.getText().equals("(optional)")) {
+                return monster;
+            } else {
+                monster.setID(idField.getText());
+                return monster;
+            }
         } else {
             throw new IllegalArgumentException(
                     "There are unaddressed errors in one or more fields");
@@ -178,7 +188,7 @@ public class MonsterCreationPanel extends JPanel {
         c.anchor = GridBagConstraints.FIRST_LINE_END;
         c.gridx = 0;
         c.gridy = 3;
-        c.insets = new Insets(5, 5, 5, 5);
+        c.insets = new Insets(5, 5, 0, 5);
         add(hpLabel, c);
 
         hpField = new JTextField();
@@ -187,7 +197,35 @@ public class MonsterCreationPanel extends JPanel {
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         c.gridx = 1;
         c.gridy = 3;
-        c.insets = new Insets(5, 0, 5, 5);
+        c.insets = new Insets(5, 0, 0, 5);
         add(hpField, c);
+
+        idLabel = new JLabel("Temporary ID");
+        c = new GridBagConstraints();
+        c.anchor = GridBagConstraints.FIRST_LINE_END;
+        c.gridx = 0;
+        c.gridy = 4;
+        c.insets = new Insets(5, 5, 5, 5);
+        add(idLabel, c);
+
+        idField = new JTextField("(optional)");
+        idField.addFocusListener(this);
+        c = new GridBagConstraints();
+        c.anchor = GridBagConstraints.FIRST_LINE_START;
+        c.gridx = 1;
+        c.gridy = 4;
+        c.insets = new Insets(5, 0, 5, 5);
+        add(idField, c);
+    }
+
+    @Override
+    public void focusGained(FocusEvent e) {
+        if (idField.getText().equals("(optional)")) {
+            idField.setText("");
+        }
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
     }
 }
