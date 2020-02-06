@@ -93,7 +93,15 @@ public class MonsterCreationPanel extends JPanel implements FocusListener{
             int hpValue = Integer.parseInt(hpField.getText());
             int crValue = Integer.parseInt(
                     crCombo.getSelectedItem().toString().split(" ")[1]);
-            return new Monster(name, name, acValue, hpValue, crValue);
+            Monster monster = new Monster(
+                    name, name, acValue, hpValue, crValue);
+            if (idField.getText().equals("") || 
+                    idField.getText().equals("(optional)")) {
+                return monster;
+            } else {
+                monster.setID(idField.getText());
+                return monster;
+            }
         } else {
             throw new IllegalArgumentException(
                     "There are unaddressed errors in one or more fields");
