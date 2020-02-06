@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dmtools.GUI.entityguicomponents.dialogs.panels;
+package dmtools.GUI.entityguicomponents.pcdialogs.panels;
 
+import dmtools.game.entities.PC;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -18,18 +19,21 @@ import javax.swing.JTextField;
  *
  * @author A3
  */
-public class CreateACandHP extends JPanel {
+public class DisplayACandHP extends JPanel {
 
     private JTextField acTF;
     private JTextField mHpTF;
     private JTextField cHpTF;
-    
+
     private JLabel acLabel;
     private JLabel mHpLabel;
-    
+    private JLabel cHpLabel;
 
-    public CreateACandHP() {
+    private PC pc;
+
+    public DisplayACandHP(PC pc) {
         super();
+        this.pc = pc;
         setLayout(new GridBagLayout());
         setBorder(BorderFactory.createTitledBorder("Health"));
         GridBagConstraints c = new GridBagConstraints();
@@ -37,7 +41,7 @@ public class CreateACandHP extends JPanel {
 
         //AC
         acLabel = new JLabel("AC");
-        acTF = new JTextField();
+        acTF = new JTextField("" + pc.getAC());
         acTF.setColumns(4);
         c.gridx = 0;
         c.gridy = 0;
@@ -47,31 +51,39 @@ public class CreateACandHP extends JPanel {
 
         //Max HP
         mHpLabel = new JLabel("HP");
-        mHpTF = new JTextField();
+        mHpTF = new JTextField("" + pc.getMaxHP());
         mHpTF.setColumns(4);
         c.gridx = 0;
         c.gridy = 1;
         add(mHpLabel, c);
         c.gridx = 1;
         add(mHpTF, c);
-
     }
-    
+
     public void highlight(boolean b, String s) {
         if (b) {
             switch (s) {
                 case "AC":
                     acLabel.setForeground(Color.red);
-                case "HP":
+                    break;
+                case "MaxHP":
                     mHpLabel.setForeground(Color.red);
+                    break;
+                case "CurrentHP":
+                    cHpLabel.setForeground(Color.red);
+                    break;
             }
-        }
-        else {
+        } else {
             switch (s) {
                 case "AC":
                     acLabel.setForeground(null);
+                    break;
                 case "HP":
                     mHpLabel.setForeground(null);
+                    break;
+                case "CurrentHP":
+                    cHpLabel.setForeground(null);
+                    break;
             }
         }
     }
@@ -105,7 +117,7 @@ public class CreateACandHP extends JPanel {
         }
     }
 
-    public int getCurrentHP() throws NumberFormatException, 
+    private int currentHP() throws NumberFormatException,
             IllegalArgumentException {
         if (cHpTF.getText().equals("")) {
             throw new IllegalArgumentException();

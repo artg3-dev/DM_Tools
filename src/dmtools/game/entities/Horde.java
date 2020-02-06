@@ -11,6 +11,7 @@ import dmtools.game.entities.numericals.enums.Stat;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  *
@@ -19,17 +20,16 @@ import java.util.Map;
 public class Horde extends DNDEntity {
 
     private Map<Integer, Monster> members;
-    private Monster hordeType;
+    private final Monster hordeType;
     private int hordeSize;
     private int overallCount;
-    private String id;
 
     public Horde(Monster monster, int count, String id) {
         super(monster.getType() + " Horde", new StatBlock(),
                 monster.getAC(), monster.getMaxHP());
         this.hordeType = monster;
         this.id = id;
-        members = new HashMap();
+        this.members = new HashMap();
         for (int i = 1; i <= count; i++) {
             Monster clone = new Monster(monster.getName() + " " + i,
                     monster.getType(), monster.getAC(),
@@ -78,14 +78,7 @@ public class Horde extends DNDEntity {
     public void setCurrentHP(int currentHP, int monsterNumber) {
         members.get(monsterNumber).setCurrentHP(currentHP);
     }
-
-    public String getUniqueName() {
-        StringBuilder sb1 = new StringBuilder();
-        sb1.append(name);
-        sb1.append(id);
-        return sb1.toString();
-    }
-
+    
     @Override
     public int getProficiencyBonus() {
         return 0;
@@ -121,31 +114,5 @@ public class Horde extends DNDEntity {
         }
 
         return sb.toString();
-    }
-
-    @Override
-    public boolean equals(Object inQuestion) {
-        if (inQuestion == null) {
-            return false;
-        }
-
-        if (getClass() != inQuestion.getClass()) {
-            return false;
-        }
-
-        Horde compared = (Horde) inQuestion;
-     
-
-        return getUniqueName().equals(compared.getUniqueName());
-    }
-
-    @Override
-    public int compareTo(DNDEntity o) {
-        if (o.getClass() == Horde.class) {
-            Horde h = (Horde) o;
-            return getUniqueName().compareToIgnoreCase(h.getUniqueName());
-        } else {
-            return name.compareToIgnoreCase(o.getName());
-        }
     }
 }

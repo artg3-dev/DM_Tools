@@ -14,16 +14,26 @@ import dmtools.game.entities.numericals.enums.Stat;
  *
  * @author A3
  */
-public class Monster extends DNDEntity implements ReadWritable{
-    private int CR;
-    private String monsterType;
+public class Monster extends DNDEntity implements ReadWritable {
 
-    public Monster(String name, String monsterType, int AC,
-            int HP, int CR) {
-        // Statblock is a placeholder until monsters are actually developed
+    private final int CR;
+    private final String monsterType;
+
+    // Statblock is a placeholder until monsters are actually developed
+    public Monster(String name, String monsterType, int AC, int HP, int CR,
+            String id) {
         super(name, new StatBlock(), AC, HP);
         this.CR = CR;
         this.monsterType = monsterType;
+        this.id = id;
+    }
+
+    public Monster(String name, String monsterType, int AC,
+            int HP, int CR) {
+        super(name, new StatBlock(), AC, HP);
+        this.CR = CR;
+        this.monsterType = monsterType;
+        this.id = "";
     }
 
     public int getCR() {

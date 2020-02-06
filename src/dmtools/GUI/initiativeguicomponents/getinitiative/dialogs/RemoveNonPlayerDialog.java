@@ -74,8 +74,8 @@ public class RemoveNonPlayerDialog extends JDialog
         names = new HashMap();
         int j = 0;
         for (DNDEntity i : entities) {
-            names.put(i.getName(), i);
-            listModel.addElement(i.getName());
+            names.put(i.getUniqueName(), i);
+            listModel.addElement(i.getUniqueName());
         }
     }
 
