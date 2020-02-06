@@ -112,7 +112,8 @@ public abstract class DNDEntity implements Comparable<DNDEntity> {
 
     @Override
     public int hashCode() {
-        return this.name.hashCode() * 29;
+        int hashCode = getUniqueName().hashCode();
+        return hashCode * 29;
     }
 
     abstract public int getProficiencyBonus();
