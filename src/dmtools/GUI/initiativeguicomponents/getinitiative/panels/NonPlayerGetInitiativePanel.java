@@ -7,14 +7,13 @@ package dmtools.GUI.initiativeguicomponents.getinitiative.panels;
 
 import dmtools.GUI.LayoutConstants;
 import dmtools.game.entities.DNDEntity;
-import dmtools.game.entities.PC;
+import dmtools.game.entities.EntityTracker;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JLabel;
@@ -29,13 +28,13 @@ public class NonPlayerGetInitiativePanel extends JPanel {
 
     private Map<DNDEntity, JTextField> inputs;
     private Map<DNDEntity, JLabel> labels;
-    private ArrayList<DNDEntity> entities;
+    private EntityTracker entities;
 
     public NonPlayerGetInitiativePanel() {
         super();
         inputs = new HashMap();
         labels = new HashMap();
-        entities = new ArrayList();
+        entities = new EntityTracker();
         createComponents();
     }
 
@@ -55,26 +54,22 @@ public class NonPlayerGetInitiativePanel extends JPanel {
     }
 
     public ArrayList<DNDEntity> getEntities() {
-        return entities;
+        return entities.getEntities();
     }
 
     public void addEntity(DNDEntity e) {
         entities.add(e);
-        Collections.sort(entities);
+        entities.sort();
 
         // Label
-        JLabel name = new JLabel(e.getName());
+        JLabel name = new JLabel(e.getUniqueName());
         labels.put(e, name);
 
         // TextField
         JTextField tf = new JTextField(2);
         inputs.put(e, tf);
 
-        removeAll();
-        createHeader();
         updateEntityList();
-        revalidate();
-        repaint();
     }
 
     public void removeEntity(DNDEntity e) {
@@ -117,13 +112,16 @@ public class NonPlayerGetInitiativePanel extends JPanel {
     }
 
     private void updateEntityList() {
+        removeAll();
+        createHeader();
         int fillerY = 1;
         GridBagConstraints c = new GridBagConstraints();
+        ArrayList<DNDEntity> entityList = entities.getEntities();
         if (!labels.isEmpty() && !inputs.isEmpty()) {
-            for (DNDEntity i : entities) {
+            for (DNDEntity i : entityList) {
                 // Label
                 c.gridx = 0;
-                c.gridy = entities.indexOf(i) + 1;
+                c.gridy = entityList.indexOf(i) + 1;
                 c.weightx = 1;
                 c.anchor = GridBagConstraints.FIRST_LINE_END;
                 c.insets = new Insets(5, 5, 0, 5);
@@ -139,6 +137,8 @@ public class NonPlayerGetInitiativePanel extends JPanel {
         }
 
         addFiller(fillerY);
+        revalidate();
+        repaint();
     }
 
     private void createComponents() {
