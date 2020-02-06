@@ -22,11 +22,8 @@ import javax.swing.border.TitledBorder;
  *
  * @author A3
  */
-public class DisplaySelectedSkills extends JPanel {
+public class DisplaySelectedSkills extends JPanel implements ItemListener {
 
-    private HashSet<Skill> skillsSelected;
-    private Border redline = BorderFactory.createLineBorder(Color.red);
-    private PC pc;
     private final HashSet<Skill> skillsSelected;
     private final Border redline = BorderFactory.createLineBorder(Color.red);
     private final PC pc;
@@ -43,10 +40,10 @@ public class DisplaySelectedSkills extends JPanel {
         for (Skill i : Skill.values()) {
             JCheckBox skillCheckBox = new JCheckBox(i.toString());
             skillCheckBox.setFocusable(false);
-            skillCheckBox.setEnabled(false);
+            skillCheckBox.addItemListener(this);
             if (pc.isSkillProficient(i)) {
                 skillCheckBox.setSelected(true);
-                skillsSelected.add(i);
+//                skillsSelected.add(i);
             }
             add(skillCheckBox);
         }
@@ -54,5 +51,28 @@ public class DisplaySelectedSkills extends JPanel {
 
     public HashSet<Skill> getSelectedSkills() {
         return skillsSelected;
+    }
+
+    public void highlight(boolean shouldColor) {
+        if (shouldColor) {
+            setBorder(BorderFactory.createTitledBorder(redline,
+                    "Selected Skills",
+                    TitledBorder.DEFAULT_POSITION,
+                    TitledBorder.DEFAULT_JUSTIFICATION, null, Color.red));
+        } else {
+            setBorder(BorderFactory.createTitledBorder(null, "Selected Skills",
+                    TitledBorder.DEFAULT_POSITION,
+                    TitledBorder.DEFAULT_JUSTIFICATION, null, null));
+        }
+    }
+
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        JCheckBox choice = (JCheckBox) e.getItemSelectable();
+        if (e.getStateChange() == ItemEvent.SELECTED) {
+            skillsSelected.add(Skill.getSkillFromString(choice.getText()));
+        } else {
+            skillsSelected.remove(Skill.getSkillFromString(choice.getText()));
+        }
     }
 }
