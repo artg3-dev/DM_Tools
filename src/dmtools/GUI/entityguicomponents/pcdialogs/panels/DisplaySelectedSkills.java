@@ -27,6 +27,9 @@ public class DisplaySelectedSkills extends JPanel {
     private HashSet<Skill> skillsSelected;
     private Border redline = BorderFactory.createLineBorder(Color.red);
     private PC pc;
+    private final HashSet<Skill> skillsSelected;
+    private final Border redline = BorderFactory.createLineBorder(Color.red);
+    private final PC pc;
 
     public DisplaySelectedSkills(PC pc) {
         this.pc = pc;
