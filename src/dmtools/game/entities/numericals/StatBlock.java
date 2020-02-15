@@ -5,9 +5,7 @@
  */
 package dmtools.game.entities.numericals;
 
-import dmtools.game.entities.numericals.enums.Skill;
 import dmtools.game.entities.numericals.enums.Stat;
-import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -77,6 +75,17 @@ public class StatBlock {
                 sb.append(" ");
             }
         }
+        return sb.toString();
+    }
+    
+    public String printStat(Stat stat) {
+        StringBuilder sb = new StringBuilder();
+        int statValue = statBlock.get(stat);
+        int modifier = getModifier(stat);
+        sb.append(statValue);
+        sb.append(modifier > 0 ? " (+" : " (");
+        sb.append(modifier);
+        sb.append(")");
         return sb.toString();
     }
 

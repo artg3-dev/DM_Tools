@@ -25,7 +25,7 @@ public class StatBlockPanel extends JPanel {
     private static final int HGAP = 0;
     private static final int VGAP = 0;
     private static final float statFontSize = 25f;
-    private static final float valueFontSize = 22f;
+    private static final float valueFontSize = 18f;
 
     public StatBlockPanel(StatBlock statBlock) {
         this.statBlock = statBlock;
@@ -36,45 +36,45 @@ public class StatBlockPanel extends JPanel {
 
         //Str
         JLabel str = new StatLabel(Stat.STR, statFontSize);
-        JLabel strValue = new JLabel("" + statBlock.getStat(Stat.STR));
+        JLabel strValue = new JLabel(statBlock.printStat(Stat.STR));
         strValue.setFont(getFont().deriveFont(valueFontSize));
 
         //Dex
         JLabel dex = new StatLabel(Stat.DEX, statFontSize);
-        JLabel dexValue = new JLabel("" + statBlock.getStat(Stat.DEX));
+        JLabel dexValue = new JLabel(statBlock.printStat(Stat.DEX));
         dexValue.setFont(getFont().deriveFont(valueFontSize));
 
         //Con
         JLabel con = new StatLabel(Stat.CON, statFontSize);
-        JLabel conValue = new JLabel("" + statBlock.getStat(Stat.CON));
+        JLabel conValue = new JLabel(statBlock.printStat(Stat.CON));
         conValue.setFont(getFont().deriveFont(valueFontSize));
 
         //Int
         JLabel intelligence = new StatLabel(Stat.INT, statFontSize);
-        JLabel intelligenceValue = new JLabel("" + statBlock.getStat(Stat.INT));
+        JLabel intelligenceValue = new JLabel(statBlock.printStat(Stat.INT));
         intelligenceValue.setFont(getFont().deriveFont(valueFontSize));
 
         //Wis
         JLabel wis = new StatLabel(Stat.WIS, statFontSize);
-        JLabel wisValue = new JLabel("" + statBlock.getStat(Stat.WIS));
+        JLabel wisValue = new JLabel(statBlock.printStat(Stat.WIS));
         wisValue.setFont(getFont().deriveFont(valueFontSize));
 
         //Cha
         JLabel cha = new StatLabel(Stat.CHA, statFontSize);
-        JLabel chaValue = new JLabel("" + statBlock.getStat(Stat.CHA));
+        JLabel chaValue = new JLabel(statBlock.printStat(Stat.CHA));
         chaValue.setFont(getFont().deriveFont(valueFontSize));
 
         GridBagConstraints l = new GridBagConstraints();
         l.gridx = 0;
         l.gridy = 0;
-        l.insets = new Insets(0, 5, 0, 15);
+        l.insets = new Insets(0, 5, 0, 5);
         l.anchor = GridBagConstraints.LINE_END;
-        l.anchor = GridBagConstraints.LINE_START;
         
         GridBagConstraints r = new GridBagConstraints();
         r.gridx = 1;
         r.gridy = 0;
-        r.insets = new Insets(0, 0, 0, 5);
+        r.insets = new Insets(0, 5, 0, 5);
+        r.anchor = GridBagConstraints.LINE_START;
         
         add(str, l);
         add(strValue, r);
